@@ -1,0 +1,64 @@
+# --- Android Studio / IntelliJ IDEA ---
+# 项目配置文件（包含本地路径，不能提交）
+local.properties
+# IDE 生成的项目文件
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+.idea/navEditor.xml
+.idea/compiler.xml
+.idea/modules.xml
+# Android Studio 3.x+ 的具体配置
+.idea/misc.xml
+.idea/deploymentTargetDropDown.xml
+# 调试和运行配置（视情况而定，通常不提交）
+.idea/runConfigurations.xml
+
+# --- Gradle 构建系统 ---
+.gradle/
+build/
+app/build/
+# 忽略所有模块下的 build 文件夹
+*/build/
+# Gradle 包装器 (通常建议提交 jar，但如果你想极致精简可以忽略，不过不推荐忽略)
+# gradle/wrapper/gradle-wrapper.jar
+
+# --- Android 构建产物 ---
+# 产生的 APK 和 AAR 文件
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# --- 外部原生构建 (C/C++ / NDK) ---
+.externalNativeBuild
+.cxx/
+
+# --- 临时文件和日志 ---
+/captures
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Kotlin / KSP (既然你用了 KSP) ---
+# KSP 生成的代码通常在 build 目录下，已经被上面的 build/ 忽略了
+# 但为了保险起见防止某些配置生成到外部
+kotlin-js-store/
+
+# --- 安全与密钥 (绝对不能提交！) ---
+# 签名证书
+*.jks
+*.keystore
+*.p12
+*.key
+# Google 服务配置 (如果你的库是开源的，这个要忽略；如果是私有项目，可以提交)
+google-services.json
+GoogleService-Info.plist
+
+# --- 依赖注入与生成代码 ---
+# Hilt 和 Room 生成的代码都在 build 文件夹中，不需要额外配置
