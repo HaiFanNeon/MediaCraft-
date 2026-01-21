@@ -3,6 +3,8 @@ package com.example.mediacraft.data.repository
 import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
+import com.example.mediacraft.data.local.dao.RecordDao
+import com.example.mediacraft.data.local.entity.ProcessingRecord
 import com.example.mediacraft.data.model.VideoItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -12,8 +14,28 @@ import javax.inject.Inject
 // @Inject 告诉 Hilt：如果别人需要 VideoRepository，你就帮我造一个
 // @ApplicationContext 告诉 Hilt：请给我注入系统的 Context，我要用它查数据库
 class VideoRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val recordDao: RecordDao
+    // TODO: 将来这里还可以注入 ApiService
 ) {
+
+    /**
+     * 保存处理记录到本地数据库
+     * suspend 关键字表示这是一个挂起函数，不会阻塞主线程
+     */
+    suspend fun saveProcessingRecord(
+        originalPath: String,
+        outputPath: String,
+        isSuccess: Boolean
+    ) {
+        val record = ProcessingRecord(
+            originalPath = originalPath,
+            outputPath = outputPath,
+            taskType = "Compression", // 标记任务类型为压缩
+            status = if (isSuccess) 1 else 2 // 1成功，2失败
+        )
+        recordDao.insert(record)
+    }
 
     // suspend 表示这是一个耗时操作，必须在协程里跑，不会卡死主线程
     suspend fun getAllVideos(): List<VideoItem> = withContext(Dispatchers.IO) {

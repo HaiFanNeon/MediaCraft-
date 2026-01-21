@@ -104,5 +104,9 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
-    // ⚠️ 删除所有 Compose 相关的 implementation (...)
+    implementation(files("libs/ffmpeg-kit-audio-6.0-2.aar"))
+    implementation ("com.arthenica:smart-exception-java:0.2.1")
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation("androidx.activity:activity-ktx:1.9.3")
 }
