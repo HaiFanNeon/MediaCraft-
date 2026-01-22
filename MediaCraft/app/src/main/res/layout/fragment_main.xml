@@ -49,6 +49,23 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardExtractAudio"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#FFFFFF">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="提取音频(MP3)"
+                android:gravity="center"
+                android:textColor="#999999"/>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -63,7 +80,6 @@
                 android:gravity="center"
                 android:textColor="#999999"/>
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
 
     <TextView

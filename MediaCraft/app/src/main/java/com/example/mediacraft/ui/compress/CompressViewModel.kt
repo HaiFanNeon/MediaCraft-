@@ -88,12 +88,12 @@ class CompressViewModel @Inject constructor(
                     }
                     is FFmpegHelper.State.Success -> {
                         // 记录可以使用 inputUri.toString() 或者维持原来的路径字符串逻辑（如果有的话）
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true)
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, "Compression")
                         _uiState.value = UiState.Success(state.outputPath)
                         if (cacheFile.exists()) cacheFile.delete()
                     }
                     is FFmpegHelper.State.Failure -> {
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false)
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, "Compression")
                         _uiState.value = UiState.Error(state.error)
                         if (cacheFile.exists()) cacheFile.delete()
                     }

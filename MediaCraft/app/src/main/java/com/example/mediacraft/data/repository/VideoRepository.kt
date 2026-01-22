@@ -26,12 +26,13 @@ class VideoRepository @Inject constructor(
     suspend fun saveProcessingRecord(
         originalPath: String,
         outputPath: String,
-        isSuccess: Boolean
+        isSuccess: Boolean,
+        taskType: String
     ) {
         val record = ProcessingRecord(
             originalPath = originalPath,
             outputPath = outputPath,
-            taskType = "Compression", // 标记任务类型为压缩
+            taskType = taskType,
             status = if (isSuccess) 1 else 2 // 1成功，2失败
         )
         recordDao.insert(record)

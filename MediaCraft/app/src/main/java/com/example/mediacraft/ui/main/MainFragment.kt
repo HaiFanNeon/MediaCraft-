@@ -37,12 +37,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             findNavController().navigate(R.id.action_mainFragment_to_compressFragment)
         }
 
-        // (稍后实现) 绑定提取音频按钮的跳转
-        // binding.cardExtractAudio.setOnClickListener {
-        //     findNavController().navigate(R.id.action_mainFragment_to_extractAudioFragment)
-        // }
-
-        // 2. 设置 RecyclerView (注意 Context 要用 requireContext())
+        // 2. 绑定提取音频按钮的跳转
+        binding.cardExtractAudio.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_extractAudioFragment)
+        }
+        
         adapter = HistoryAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
