@@ -70,6 +70,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 ffmpeg-kit-full = { group = "com.arthenica", name = "ffmpeg-kit-full", version.ref = "ffmpegKit" }
+#ffmpeg-kit-full = { group = "com.arthenica", name = "ffmpeg-kit-full-gpl", version.ref = "ffmpegKit" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

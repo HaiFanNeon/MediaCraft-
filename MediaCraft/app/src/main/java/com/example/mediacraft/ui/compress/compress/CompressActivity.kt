@@ -31,25 +31,22 @@ class CompressActivity : AppCompatActivity() {
     private lateinit var btnStartCompress: Button
     private lateinit var btnSelectVideo: Button
 
-    private var currentVideoPath: String? = null
-
-    // 注册文件选择器回调
+    private var currentVideoUri: Uri? = null
     private val selectVideoLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val uri: Uri? = result.data?.data
             uri?.let {
-                // 将 Uri 转换为真实文件路径 (这是个难点，需要工具类)
-                val path = PathUtils.getRealPathFromUri(this, it)
-                if (path != null) {
-                    currentVideoPath = path
-                    tvSelectedPath.text = "已选: $path"
-                    btnStartCompress.isEnabled = true
-                    tvStatus.text = "等待压缩..."
-                } else {
-                    Toast.makeText(this, "无法解析文件路径", Toast.LENGTH_SHORT).show()
-                }
+                currentVideoUri = it // 保存 Uri
+
+                // 仅用于显示文件名，不影响核心逻辑
+                // 假如 PathUtils 还是获取不到，就显示 Uri 字符串
+                val pathStr = PathUtils.getRealPathFromUri(this, it) ?: it.toString()
+                tvSelectedPath.text = "已选: $pathStr"
+
+                btnStartCompress.isEnabled = true
+                tvStatus.text = "等待压缩..."
             }
         }
     }
@@ -79,8 +76,8 @@ class CompressActivity : AppCompatActivity() {
         }
 
         btnStartCompress.setOnClickListener {
-            currentVideoPath?.let { path ->
-                viewModel.compressVideo(path)
+            currentVideoUri?.let { uri ->
+                viewModel.compressVideo(uri) // 直接传 Uri
             }
         }
     }

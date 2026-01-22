@@ -42,13 +42,16 @@ class FFmpegHelper @Inject constructor() {
                 if (ReturnCode.isSuccess(returnCode)) {
                     trySend(State.Success(outputPath))
                 } else {
-                    trySend(State.Failure("FFmpeg Error: ${session.failStackTrace}"))
+//                    trySend(State.Failure("FFmpeg Error: ${session.failStackTrace}"))
+                    // 【关键修改】这里改用 getAllLogsAsString() 获取真实错误信息
+                    val logString = session.allLogsAsString
+                    Log.e("FFmpegError", logString) // 在 Logcat 也能看到
+                    trySend(State.Failure("FFmpeg Failed. Logs: $logString"))
                 }
                 close() // 关闭流
             },
             { log ->
-                // 日志回调，可以在这里分析错误
-                // Log.d("FFmpegLog", log.message)
+                 Log.d("FFmpeg", log.message)
             },
             { statistics ->
                 // 进度回调 (这里只是简单示例，真实进度需要根据视频总时长计算)
