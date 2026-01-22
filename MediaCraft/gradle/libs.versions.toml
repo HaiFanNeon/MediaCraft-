@@ -26,7 +26,9 @@ retrofitKotlinxSerializationJson = "1.0.0"
 appcompat = "1.7.1"
 composeBom = "2024.09.00" # Retrofit 的序列化转换器
 
-ffmpegKit = "6.0-2" # 使用较新的 LTS 版本
+ffmpegKit = "6.0-2"
+navigationFragmentKtx = "2.9.6"
+navigationUiKtx = "2.9.6" # 使用较新的 LTS 版本
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 
@@ -70,6 +72,8 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 ffmpeg-kit-full = { group = "com.arthenica", name = "ffmpeg-kit-full", version.ref = "ffmpegKit" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 #ffmpeg-kit-full = { group = "com.arthenica", name = "ffmpeg-kit-full-gpl", version.ref = "ffmpegKit" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
