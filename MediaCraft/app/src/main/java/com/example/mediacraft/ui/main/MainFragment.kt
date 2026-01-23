@@ -30,14 +30,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initView() {
-        // 1. 修改跳转逻辑：使用 Navigation
         binding.cardCompress.setOnClickListener {
-            // 原来是: startActivity(Intent(this, CompressActivity::class.java))
-            // 现在是:
             findNavController().navigate(R.id.action_mainFragment_to_compressFragment)
         }
 
-        // 2. 绑定提取音频按钮的跳转
         binding.cardExtractAudio.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_extractAudioFragment)
         }
@@ -45,6 +41,22 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         adapter = HistoryAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+
+        // 【新增】处理点击事件
+        adapter.onItemClick = { record ->
+            // record.outputPath 是我们存进数据库的绝对路径
+            // record.taskType 可以帮我们判断是视频还是音频 (目前播放器通用，暂不需要特殊处理)
+
+            // 使用 Bundle 传递参数
+            val bundle = Bundle().apply {
+                putString("mediaPath", record.outputPath)
+                // 简单的逻辑判断类型
+                val type = if (record.taskType.contains("Audio")) "audio" else "video"
+                putString("mediaType", type)
+            }
+
+            // 跳转
+            findNavController().navigate(R.id.action_mainFragment_to_playerFragment, bundle)        }
     }
 
     private fun observeData() {
