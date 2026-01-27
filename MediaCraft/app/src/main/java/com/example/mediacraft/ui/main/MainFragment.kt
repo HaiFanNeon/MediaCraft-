@@ -1,5 +1,5 @@
 package com.example.mediacraft.ui.main
-
+import com.google.android.material.tabs.TabLayout
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -42,6 +42,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
+        // 【新增】TabLayout 监听
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // 当 tab 被选中，通知 ViewModel 切换查询条件
+                tab?.position?.let { index ->
+                    viewModel.setCategoryIndex(index)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
         // 【新增】处理点击事件
         adapter.onItemClick = { record ->
             // record.outputPath 是我们存进数据库的绝对路径
@@ -54,9 +67,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 val type = if (record.taskType.contains("Audio")) "audio" else "video"
                 putString("mediaType", type)
             }
-
             // 跳转
-            findNavController().navigate(R.id.action_mainFragment_to_playerFragment, bundle)        }
+            findNavController().navigate(R.id.action_mainFragment_to_playerFragment, bundle)
+        }
     }
 
     private fun observeData() {
