@@ -1,63 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chauthai.swipereveallayout.SwipeRevealLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:mode="same_level"
+    app:dragEdge="right"
+    tools:ignore="MissingClass">
+
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
+        <FrameLayout
+            android:id="@+id/btnFavorite"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#FF9800"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
             <TextView
-                android:id="@+id/tvTaskType"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="视频压缩"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tvStatus"
+                android:id="@+id/tvFavorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="成功"
-                android:textSize="14sp"
-                android:textColor="#4CAF50"/>
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:text="收藏"
+                android:textColor="#FFF"
+                android:textStyle="bold"/>
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/tvPath"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="/storage/..."
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textSize="12sp"
-            android:textColor="#666666"/>
+        <FrameLayout
+            android:id="@+id/btnShare"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#2196F3"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="分享"
+                android:textColor="#FFF"
+                android:textStyle="bold"/>
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="2024-01-22 12:00:00"
-            android:textSize="10sp"
-            android:textColor="#999999"
-            android:gravity="end"/>
-
+        <FrameLayout
+            android:id="@+id/btnDelete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#F44336"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="删除"
+                android:textColor="#FFF"
+                android:textStyle="bold"/>
+        </FrameLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="6dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTaskType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="视频压缩"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tvFavoriteMark"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="★"
+                    android:textColor="#FF9800"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成功"
+                    android:textSize="14sp"
+                    android:textColor="#4CAF50"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="/storage/..."
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textSize="12sp"
+                android:textColor="#666666"/>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="2024-01-22 12:00:00"
+                android:textSize="10sp"
+                android:textColor="#999999"
+                android:gravity="end"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

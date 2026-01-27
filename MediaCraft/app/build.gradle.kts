@@ -1,3 +1,5 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -27,6 +29,12 @@ android {
         // 配置 Room 的 Schema 输出位置 (可选，方便查看数据库结构变化)
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
+        }
+        // 指定 Room 导出 Schema 的位置
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
         }
     }
 
@@ -106,12 +114,15 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
+    implementation("androidx.activity:activity-ktx:1.9.3")
     implementation(files("libs/ffmpeg-kit-audio-6.0-2.aar"))
     implementation ("com.arthenica:smart-exception-java:0.2.1")
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation("androidx.activity:activity-ktx:1.9.3")
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
+    // 侧滑菜单库
+    implementation("com.github.chthai64:SwipeRevealLayout:1.4.0")
+
 }

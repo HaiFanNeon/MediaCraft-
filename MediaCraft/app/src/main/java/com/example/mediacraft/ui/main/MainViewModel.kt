@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,6 +48,20 @@ class MainViewModel @Inject constructor(
             0 -> _filterType.value = null // 全部
             1 -> _filterType.value = "Compression" // 对应 Repository 里存的字符串
             2 -> _filterType.value = "AudioExtraction" // 对应 Repository 里存的字符串
+        }
+    }
+
+    fun deleteRecord(record: ProcessingRecord) {
+        viewModelScope.launch {
+            recordDao.delete(record)
+        }
+    }
+
+    fun toggleFavorite(record: ProcessingRecord) {
+        viewModelScope.launch {
+            // 取反当前收藏状态
+            val newRecord = record.copy(isFavorite = !record.isFavorite)
+            recordDao.update(newRecord)
         }
     }
 }

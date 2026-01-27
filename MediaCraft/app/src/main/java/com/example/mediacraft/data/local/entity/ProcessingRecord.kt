@@ -1,5 +1,6 @@
 package com.example.mediacraft.data.local.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,5 +15,8 @@ data class ProcessingRecord(
     val outputPath: String,     // 输出视频路径
     val taskType: String,       // 任务类型：压缩、转码、静音等
     val status: Int,            // 状态：0-进行中, 1-成功, 2-失败
-    val timestamp: Long = System.currentTimeMillis() // 创建时间
+    val timestamp: Long = System.currentTimeMillis(), // 创建时间
+    // 须给默认值，否则 AutoMigration 会报错
+    @ColumnInfo(name = "is_favorite", defaultValue = "0") // SQLite里 0 代表 false
+    val isFavorite: Boolean = false
 )
