@@ -1,6 +1,32 @@
 <resources>
     <string name="app_name">MediaCraft</string>
     <string name="title_activity_main2">MainActivity2</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="home_title">MediaCraft 工具箱</string>
+    <string name="home_features_title">功能列表</string>
+    <string name="home_recent_records">最近处理记录</string>
+    <string name="feature_video_compress">视频压缩\n(Video Compress)</string>
+    <string name="feature_audio_extract">提取音频\n(Extract Audio)</string>
+    <string name="feature_more_coming">更多功能\n敬请期待</string>
+
+    <string name="tab_all">全部</string>
+    <string name="tab_compress">视频压缩</string>
+    <string name="tab_audio">音频提取</string>
+
+    <string name="action_select_video">选择视频</string>
+    <string name="action_start_compress">开始压缩</string>
+    <string name="action_start_extract">开始提取</string>
+    <string name="action_cancel">取消</string>
+    <string name="status_waiting">等待操作...</string>
+    <string name="status_processing">正在处理中...</string>
+    <string name="status_success">成功</string>
+    <string name="status_failure">失败</string>
+
+    <string name="btn_favorite">收藏</string>
+    <string name="btn_unfavorite">取消</string>
+    <string name="btn_share">分享</string>
+    <string name="btn_delete">删除</string>
+
+    <string name="task_name_compress">视频压缩</string>
+    <string name="task_name_audio">音频提取</string>
 </resources>

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:text="MediaCraft 工具箱"
+        android:text="@string/home_title"
         android:textSize="22sp"
         android:textStyle="bold"
         android:background="#FFFFFF"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="功能列表"
+        android:text="@string/tab_all"
         android:layout_margin="16dp"
         android:textStyle="bold"/>
 
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="视频压缩\n(Video Compress)"
+                android:text="@string/tab_compress"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textColor="#1565C0"/>
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="提取音频(MP3)"
+                android:text="@string/tab_audio"
                 android:gravity="center"
                 android:textColor="#1565C0"/>
         </androidx.cardview.widget.CardView>

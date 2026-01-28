@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 import android.net.Uri
+import com.example.mediacraft.utils.AppConstants
 
 
 @HiltViewModel
@@ -82,18 +83,20 @@ class CompressViewModel @Inject constructor(
 
             // 4. 执行命令
             ffmpegHelper.executeCommand(command, outputPath).collect { state ->
+                val taskType = AppConstants.TASK_TYPE_COMPRESS // 替换 "AudioExtraction"
+
                 when (state) {
                     is FFmpegHelper.State.Progress -> {
                         _uiState.value = UiState.Compressing(state.percent)
                     }
                     is FFmpegHelper.State.Success -> {
                         // 记录可以使用 inputUri.toString() 或者维持原来的路径字符串逻辑（如果有的话）
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, "Compression")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, taskType)
                         _uiState.value = UiState.Success(state.outputPath)
                         if (cacheFile.exists()) cacheFile.delete()
                     }
                     is FFmpegHelper.State.Failure -> {
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, "Compression")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, taskType)
                         _uiState.value = UiState.Error(state.error)
                         if (cacheFile.exists()) cacheFile.delete()
                     }

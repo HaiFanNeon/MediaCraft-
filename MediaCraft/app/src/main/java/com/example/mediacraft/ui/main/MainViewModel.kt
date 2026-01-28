@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediacraft.data.local.dao.RecordDao
 import com.example.mediacraft.data.local.entity.ProcessingRecord
+import com.example.mediacraft.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,9 +46,10 @@ class MainViewModel @Inject constructor(
      */
     fun setCategoryIndex(index: Int) {
         when (index) {
-            0 -> _filterType.value = null // 全部
-            1 -> _filterType.value = "Compression" // 对应 Repository 里存的字符串
-            2 -> _filterType.value = "AudioExtraction" // 对应 Repository 里存的字符串
+            0 -> _filterType.value = null
+            // 使用常量替换硬编码字符串
+            1 -> _filterType.value = AppConstants.TASK_TYPE_COMPRESS
+            2 -> _filterType.value = AppConstants.TASK_TYPE_EXTRACT_AUDIO
         }
     }
 

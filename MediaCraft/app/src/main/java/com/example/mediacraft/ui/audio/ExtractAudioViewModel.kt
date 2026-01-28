@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mediacraft.data.repository.VideoRepository
+import com.example.mediacraft.utils.AppConstants
 import com.example.mediacraft.utils.FFmpegHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -75,15 +76,16 @@ class ExtractAudioViewModel @Inject constructor(
 
             // 4. 执行
             ffmpegHelper.executeCommand(command, outputPath).collect { state ->
+                val taskType = AppConstants.TASK_TYPE_EXTRACT_AUDIO // 替换 "AudioExtraction"
                 when (state) {
                     is FFmpegHelper.State.Success -> {
                         // 记录任务类型为 "AudioExtraction"
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, "AudioExtraction")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, "taskType")
                         _uiState.value = UiState.Success(state.outputPath)
                         if (cacheFile.exists()) cacheFile.delete()
                     }
                     is FFmpegHelper.State.Failure -> {
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, "AudioExtraction")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, "taskType")
                         _uiState.value = UiState.Error(state.error)
                         if (cacheFile.exists()) cacheFile.delete()
                     }
