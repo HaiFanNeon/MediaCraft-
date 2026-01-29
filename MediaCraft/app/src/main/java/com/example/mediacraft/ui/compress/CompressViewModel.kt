@@ -16,13 +16,18 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 import android.net.Uri
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.example.mediacraft.data.local.entity.ProcessingRecord
 import com.example.mediacraft.utils.AppConstants
+import com.example.mediacraft.worker.MediaWorker
 
 
 @HiltViewModel
 class CompressViewModel @Inject constructor(
-    private val ffmpegHelper: FFmpegHelper,
     private val repository: VideoRepository,
+    private val workManager: WorkManager,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
@@ -47,62 +52,63 @@ class CompressViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = UiState.Compressing(0)
 
-            // 1. 定义缓存文件
-            val cacheFile = File(context.cacheDir, "temp_compress_input.mp4")
-
-            // 2. 使用 ContentResolver 通过 Uri 读取文件流 (这是 Android 10+ 唯一合法的读取方式)
+            // 1. 复制文件到 Cache (保持不变)
+            val cacheFile = File(context.cacheDir, "work_${System.currentTimeMillis()}.mp4")
             try {
                 if (cacheFile.exists()) cacheFile.delete()
-
-                // 打开输入流 -> 打开输出流 -> 管道传输
-                context.contentResolver.openInputStream(inputUri)?.use { inputStream ->
-                    cacheFile.outputStream().use { outputStream ->
-                        inputStream.copyTo(outputStream)
+                context.contentResolver.openInputStream(inputUri)?.use { input ->
+                    cacheFile.outputStream().use { output ->
+                        input.copyTo(output)
                     }
                 } ?: run {
-                    // 如果 openInputStream 返回 null
-                    _uiState.value = UiState.Error("无法打开文件流，Uri 可能已失效")
+                    _uiState.value = UiState.Error("无法打开文件流")
                     return@launch
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
                 _uiState.value = UiState.Error("文件复制失败: ${e.message}")
                 return@launch
             }
 
-            // 3. 后续步骤不变（生成输出路径、FFmpeg 命令）
+            // 2. 生成输出路径 (保持不变)
             val outputDir = context.getExternalFilesDir("compressed_videos")
             if (outputDir != null && !outputDir.exists()) {
                 outputDir.mkdirs()
             }
-            val timestamp = System.currentTimeMillis()
-            val outputPath = "${outputDir?.absolutePath}/compress_$timestamp.mp4"
+            val outputPath = "${outputDir?.absolutePath}/compress_${System.currentTimeMillis()}.mp4"
 
-            // 使用 cacheFile.absolutePath 作为输入
+            // 3. 构建命令 (保持不变)
             val command = "-i \"${cacheFile.absolutePath}\" -c:v mpeg4 -q:v 6 \"$outputPath\""
 
-            // 4. 执行命令
-            ffmpegHelper.executeCommand(command, outputPath).collect { state ->
-                val taskType = AppConstants.TASK_TYPE_COMPRESS // 替换 "AudioExtraction"
+            // 4. 【关键】先插入一条 "处理中/排队中" 的记录，并拿到 ID
+            val newRecord = ProcessingRecord(
+                originalPath = inputUri.toString(),
+                outputPath = outputPath,
+                taskType = AppConstants.TASK_TYPE_COMPRESS,
+                status = AppConstants.STATUS_PROCESSING, // 建议状态定义为: 0-处理中/排队中
+                timestamp = System.currentTimeMillis()
+            )
 
-                when (state) {
-                    is FFmpegHelper.State.Progress -> {
-                        _uiState.value = UiState.Compressing(state.percent)
-                    }
-                    is FFmpegHelper.State.Success -> {
-                        // 记录可以使用 inputUri.toString() 或者维持原来的路径字符串逻辑（如果有的话）
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, taskType)
-                        _uiState.value = UiState.Success(state.outputPath)
-                        if (cacheFile.exists()) cacheFile.delete()
-                    }
-                    is FFmpegHelper.State.Failure -> {
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, taskType)
-                        _uiState.value = UiState.Error(state.error)
-                        if (cacheFile.exists()) cacheFile.delete()
-                    }
-                    else -> {}
-                }
-            }
+            // 调用刚刚写好的 Repository 方法
+            val recordId = repository.insertRecordAndGetId(newRecord)
+
+            // 5. 创建 WorkRequest (把 recordId 传进去)
+            val workRequest = OneTimeWorkRequestBuilder<MediaWorker>()
+                .setInputData(
+                    workDataOf(
+                        "input_path" to cacheFile.absolutePath,
+                        "output_path" to outputPath,
+                        "command" to command,
+                        "record_id" to recordId // 传入 ID
+                    )
+                )
+                .addTag("compression")
+                .build()
+
+            // 6. 提交给 WorkManager
+            workManager.enqueue(workRequest)
+
+            // 7. 更新 UI 为“已加入队列”
+            _uiState.value = UiState.Success("任务已加入后台队列，您可以去查看历史记录")
         }
     }
 }

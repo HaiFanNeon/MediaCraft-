@@ -80,12 +80,12 @@ class ExtractAudioViewModel @Inject constructor(
                 when (state) {
                     is FFmpegHelper.State.Success -> {
                         // 记录任务类型为 "AudioExtraction"
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, "taskType")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, true, taskType)
                         _uiState.value = UiState.Success(state.outputPath)
                         if (cacheFile.exists()) cacheFile.delete()
                     }
                     is FFmpegHelper.State.Failure -> {
-                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, "taskType")
+                        repository.saveProcessingRecord(inputUri.toString(), outputPath, false, taskType)
                         _uiState.value = UiState.Error(state.error)
                         if (cacheFile.exists()) cacheFile.delete()
                     }

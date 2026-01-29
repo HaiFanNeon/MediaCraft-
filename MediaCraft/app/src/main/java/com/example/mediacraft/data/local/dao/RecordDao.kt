@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecordDao {
     @Insert
-    suspend fun insert(record: ProcessingRecord)
+    suspend fun insert(record: ProcessingRecord): Long
 
     // 查询所有
     @Query("SELECT * FROM processing_records ORDER BY timestamp DESC")
@@ -28,4 +28,8 @@ interface RecordDao {
     // 更新记录 (用于切换收藏状态)
     @Update
     suspend fun update(record: ProcessingRecord)
+
+    @Query("SELECT * FROM processing_records WHERE id = :id")
+    fun getRecordById(id: Long): ProcessingRecord?
+
 }

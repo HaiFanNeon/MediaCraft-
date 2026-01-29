@@ -104,4 +104,12 @@ class VideoRepository @Inject constructor(
         // 返回最终列表
         return@withContext videoList
     }
+
+    /**
+     * 【新增】插入记录并返回 ID
+     * 用于 WorkManager 场景，先占位，拿到 ID 后传给 Worker 更新状态
+     */
+    suspend fun insertRecordAndGetId(record: ProcessingRecord): Long {
+        return recordDao.insert(record)
+    }
 }

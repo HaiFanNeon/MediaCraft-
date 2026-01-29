@@ -92,6 +92,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.room.runtime.android)
     ksp(libs.hilt.compiler)
 
     // --- Room (数据库) ---
@@ -124,5 +125,13 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     // 侧滑菜单库
     implementation("com.github.chthai64:SwipeRevealLayout:1.4.0")
+
+    // WorkManager (Kotlin + Coroutines)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Hilt 对 WorkManager 的支持 (重要)
+    implementation("androidx.hilt:hilt-work:1.2.0")
+
+    ksp("androidx.hilt:hilt-compiler:1.2.0")
 
 }
