@@ -30,6 +30,6 @@ interface RecordDao {
     suspend fun update(record: ProcessingRecord)
 
     @Query("SELECT * FROM processing_records WHERE id = :id")
-    fun getRecordById(id: Long): ProcessingRecord?
+    suspend fun getRecordById(id: Long): ProcessingRecord?
 
 }

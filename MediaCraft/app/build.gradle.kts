@@ -92,7 +92,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.room.runtime.android)
+//    implementation(libs.androidx.room.runtime.android)
     ksp(libs.hilt.compiler)
 
     // --- Room (数据库) ---
